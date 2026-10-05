@@ -18,7 +18,7 @@ Copy any folder into your skills directory:
 cp -r skills/fail-loud ~/.claude/skills/
 ```
 
-Claude Code picks it up on the next session. Skills with `user-invocable: true` in
+Claude Code picks it up on the next session. Every skill folder has its own page with what it does, when it fires, the install commands and its files; [skills/](skills/) is the index. Skills with `user-invocable: true` in
 their `SKILL.md` header (`website-craft` and `web-motion-3d`) can also be called
 directly, for example `/website-craft detect src`.
 
