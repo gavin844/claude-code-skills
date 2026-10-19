@@ -1,0 +1,224 @@
+[
+  {
+    "name": "short",
+    "group": "working-methods",
+    "summary": "Hard word caps on every reply: the answer first, no narration, no recaps.",
+    "about": "Born from a complaint that every reply ended in a wall of text the reader skipped. Hard word caps: 60 for an answer, 100 for a finished task, 150 for a long session. The first sentence is the answer; process narration, recaps and praise go. Bad news stays at full strength: \"shorten the framing, never the fact.\" Always on."
+  },
+  {
+    "name": "just-keep-working",
+    "group": "working-methods",
+    "summary": "When the next step is obvious and reversible, do it and report, instead of asking permission.",
+    "about": "One session produced six variants of \"want me to fix that?\" about reversible tasks the agent had already diagnosed. If the fix is reversible, do it and report one line: \"a question is a cost\" paid by the person with less context. Still ask for money moving, anything a third party sees, destroying data, changing a rule the user set, or a genuine fork."
+  },
+  {
+    "name": "correction-to-rule",
+    "group": "working-methods",
+    "summary": "Turn a user's correction into a durable rule so the same mistake does not come back next session.",
+    "about": "A correction fixed in place dies with the session, and the user pays for it again next week. Fires on \"again\", \"I told you\", \"you keep\", or a repeated instruction. Name the real cause (wrong process, missing context, weak rule, unreachable rule, unreliable code), write the fix in the smallest durable place (a hook, a skill body, a memory file), then re-run the task that failed."
+  },
+  {
+    "name": "midwork-triggers",
+    "group": "working-methods",
+    "summary": "Load the right skill from what the agent is about to do mid-task, not only from the words of the request.",
+    "about": "On one day the agent broke seven things, and every one had a skill written for it that never loaded: the router fires on what the user types, and the decisions happened hours later. This is a table keyed on what the agent is about to do: add a guard, explain a zero, regenerate something, say done, rank a list. Each row names the skill and the failure that earned it."
+  },
+  {
+    "name": "preflight",
+    "group": "working-methods",
+    "summary": "Before anything that writes, sends, deploys or spends, run the one check that settles the assumption, and never quietly change a rule the user set.",
+    "about": "Twice in one day the agent replaced a rule the user had set, wrote a comment explaining why its version was better, and shipped it; the comment made the violation look deliberate. \"A requirement the user stated is not a default to be optimised.\" If a rule looks wrong, say so in one sentence and keep it. Before any command that writes, sends, deploys or spends, name the assumption and the one command that settles it."
+  },
+  {
+    "name": "done-means-proven",
+    "group": "working-methods",
+    "summary": "Nothing is called done without evidence from outside the work: a screenshot looked at, a job that fired, a live URL fetched.",
+    "about": "From the user: \"You've done about maybe 70% of it. I tell you to fix it, and you say you're done.\" The missing 30% is always somewhere the agent did not look, so evidence must come from outside the work: a screenshot looked at, a job that fired on its own schedule, a deploy fetched at the public URL. \"Unverifiable is a legitimate outcome. Unverified and unmentioned is not.\""
+  },
+  {
+    "name": "creative-mode",
+    "group": "working-methods",
+    "summary": "On a request for creativity, diverge widely before converging, and aim for a bold, shippable leap over a safe tweak.",
+    "about": "Written because the default agent is \"too literal and too safe\": it picks the obvious option and ships a tidy increment. This mode treats the instruction as the floor, generates six to ten different directions before choosing, and picks \"the boldest idea that is still real and shippable now.\" The honesty floor stays: no invented data, no fabricated results."
+  },
+  {
+    "name": "authoring-code-safely",
+    "group": "honest-code",
+    "summary": "Write code with the file tools, never through shell string surgery, so escaping cannot corrupt the file.",
+    "about": "In one session, heredocs turned `\"\\n\"` into literal newlines, `python -c` mangled a regex escape, and an unquoted heredoc let the shell run backticked names as commands, deleting text from four files while this very skill was being written. Source files are written with Write and Edit, never through bash string surgery."
+  },
+  {
+    "name": "fail-loud",
+    "group": "honest-code",
+    "summary": "Make failures visible instead of swallowed, so broken code cannot pass for working code.",
+    "about": "\"The expensive bugs are not the ones that crash. They are the ones that return a plausible answer.\" Patterns from one week: an `except: pass` that turned a model blend into a silent no-op, an `if x:` that discarded a legitimate zero, a lookup returning `None` that left records permanently ungradeable. After any `except`, `.get()` or truthiness check: \"if this silently did nothing, would I be able to tell?\""
+  },
+  {
+    "name": "locate-before-you-guard",
+    "group": "honest-code",
+    "summary": "Find the line that produced the wrong output before adding a check that would hide it.",
+    "about": "A card showed three of one prop type; the fix was a per-market ceiling. Two days later the same card came back, ceiling intact, because the real defect was a counter four lines away that reset on every call. Reproduce the exact wrong output, point at the line, and prove the mechanism by breaking it deliberately before adding any cap, assert or retry. A guard catches the next variant; it is not the fix."
+  },
+  {
+    "name": "prove-the-checker",
+    "group": "honest-code",
+    "summary": "Test every validator against a known-bad and a known-good case before trusting what it says.",
+    "about": "Four checkers reported the opposite of the truth: a UI harness that tested dark mode by removing the attribute, a hover test using a synthetic event that cannot trigger CSS `:hover`, a guard that quarantined 77,900 valid rows. Before its output influences a decision, a checker must pass a planted known-bad case and a known-good case. \"A checker with false results is worse than no checker.\""
+  },
+  {
+    "name": "wire-the-knob",
+    "group": "honest-code",
+    "summary": "Prove some code reads a new setting before claiming the setting changes anything.",
+    "about": "A parlay edge threshold sat in config and was read by zero lines of code for two days, while parlays went 1W-10L on real money. When you write a config value or gating constant, grep for it in the same turn; if the only hit is the config file, wire it or delete it. Then set it to an absurd value once and watch for a change."
+  },
+  {
+    "name": "save-the-script",
+    "group": "honest-code",
+    "summary": "Turn a working one-off script into a kept tool instead of rewriting it next time.",
+    "about": "A markdown-to-document converter was written from scratch three times and thrown away each time. A regenerated script \"comes back slightly different every time\", so output drifts. Before writing, search the skills, tools and scratch directories for the verb. After it works, give it arguments instead of hardcoded values, a header naming the incident that produced it, and a home the next session will find."
+  },
+  {
+    "name": "user-state-is-sacred",
+    "group": "trustworthy-data",
+    "summary": "Anything a person decided by hand survives every rebuild, re-sync and regeneration.",
+    "about": "The user placed three real bets off a morning card. Three rebuilds later all three were deleted, two plays he had never seen were marked taken, and nothing errored. Three rules: a user decision is never the default, never delete a row the user has touched, preserve by identity rather than position. Load before any rebuild, re-sync or re-import that replaces rows a person may have edited."
+  },
+  {
+    "name": "one-writer-per-record",
+    "group": "trustworthy-data",
+    "summary": "A record that a scheduled job and a live session can both write gets exactly one owner.",
+    "about": "A scheduled watcher rebuilt the daily card and deleted the one a human had built minutes earlier. A screenshot script matched buttons by visible text and marked bets as placed. Every piece of durable state gets one named writer: if a scheduler writes it, a human must not, and the reverse. Browser tools against live systems block writes at the network layer, because \"intent is not enforcement.\""
+  },
+  {
+    "name": "freshness-is-a-precondition",
+    "group": "trustworthy-data",
+    "summary": "Check the age of cached data, prices and stats before acting on them.",
+    "about": "The most frequent failure in a week of work: a two-day-old capture built a card on games already finished, a stale reference price manufactured edge out of elapsed time. \"Stale data does not look stale.\" Every input carries an age checked at the point of use, unknown age is stale, and stale means refuse loudly rather than warn and continue. Freshness of a file is not freshness of its content."
+  },
+  {
+    "name": "money-is-read-never-derived",
+    "group": "trustworthy-data",
+    "summary": "Read balances and profit from the system of record, never recompute them from history.",
+    "about": "\"Every money bug in this project came from computing a figure that could have been read.\" A bankroll rebuilt from settled bets drifted from the account; two histories disagreed by $7.23 and neither could arbitrate. Name the system of record beside the code, read rather than reconstruct, surface the delta when derivation is unavoidable, never invent a number, never settle while the event is live."
+  },
+  {
+    "name": "version-your-definitions",
+    "group": "trustworthy-data",
+    "summary": "Stamp a metric's definition next to its values, so numbers from different formulas are never compared.",
+    "about": "A lines-of-code counter changed its exclusion list, and the next delta subtracted a new-rules total from an old-rules basis, reporting negative work. \"A metric is a number plus the rule that produced it.\" Stamp the definition version beside stored values, refuse to compare across a mismatch, and retire old data rather than relabel it. Use before editing any filter, threshold or formula behind a tracked number."
+  },
+  {
+    "name": "correlated-exposure",
+    "group": "trustworthy-data",
+    "summary": "Group by what decides the outcome, not by the label, so an \"at most N\" limit catches hidden overlap.",
+    "about": "A cap of two per market passed a card holding three picks that were one opinion about the first five innings of a baseball game. Three tickets, one bet. The fix was grouping by what decides the outcome, not a smaller number. Same shape: tests sharing one fixture, retries against one dead resolver. \"What single thing, if it were wrong, would take all of these down together?\""
+  },
+  {
+    "name": "enumerate-before-ranking",
+    "group": "trustworthy-data",
+    "summary": "List the whole option set before picking the best, so the pick is not made from a partial list.",
+    "about": "Ten markets had fresh prices; the card considered three. A whole market with 188 captured props was missing from the ingest loop, and nothing errored. \"Picking the best of what loaded is not picking the best.\" Count the universe from the sources, compare it to what reached the ranking, and report the gap before the winner. Use before choosing from any pool that could be quietly short."
+  },
+  {
+    "name": "web-app-baseline",
+    "group": "web-apps",
+    "summary": "The 20 checks every web app passes before it is called done, with the commands that prove them.",
+    "about": "The user listed these once; they went into a rules file nothing referenced, so they loaded nowhere. Now a skill, so it applies everywhere. Twenty checks: custom 404 and error pages, loading and empty states, a title and Open Graph image per route, keyboard reach, 360px responsiveness, AA contrast on composited colours, every UI claim true, verified at the public URL. Covers the three theme states (dark, light, unstamped) that kept biting."
+  },
+  {
+    "name": "website-craft",
+    "group": "web-apps",
+    "summary": "The 30 tells that make a site look machine-made, with a detector that finds them.",
+    "about": "\"All 30 of these are things that make a website obviously vibecoded.\" The 30 tells, each with an instead: harsh gradients, the default icon set, pure white, three feature cards in a row, the three default fonts, em dashes, fake testimonials, three pricing tiers. The detector needs only Node: `node skills/website-craft/scripts/detect.mjs <dir> [--json] [--only id,id] [--severity high]` prints `file:line` per finding and exits 1 on any HIGH, so it gates a deploy. LOOK items go to a human because \"no regex can decide this.\""
+  },
+  {
+    "name": "web-motion-3d",
+    "group": "web-apps",
+    "summary": "Real animation and 3D in a web app (Lottie, React Three Fiber, Vectary) without it reading as generated.",
+    "about": "Motion is a tell when generic and an asset when it shows the product doing something; 3D is a tell when it is a blob and an asset when it is a real object. The pipeline: Jitter to dotLottie via `@lottiefiles/dotlottie-react`, React Three Fiber with the Canvas dynamic-imported and `dpr` capped, Vectary and its free-tier limits. Threlte is Svelte-only, so nobody reaches for it in Next.js. \"If you cannot say what the motion tells the user, do not add it.\""
+  },
+  {
+    "name": "blueprint-builder",
+    "group": "client-work",
+    "summary": "A tailored top-of-funnel Opportunity Blueprint that shows a prospect where AI can move their business.",
+    "about": "Produces an Opportunity Blueprint: a tailored top-of-funnel document that shows a prospect where AI can move their business, with three to five opportunity areas, a use-case portfolio rated by impact and effort, and a workshop as the next step. Use it when a new lead or form submission comes in and you want a credible, researched read to earn the first meeting. It never states a price and always produces a draft for internal review."
+  },
+  {
+    "name": "discovery-call-prep",
+    "group": "client-work",
+    "summary": "A one-page brief before a prospect call: who is in the room, where the deal stands, the angle and the opening question.",
+    "about": "Produces a one-page pre-call brief: who the company is, who is in the room, where the deal stands in your CRM, their likely AI pains, your best angle and opening question, and any watch-outs from past conversations. Use it before a prospect or client call when you want to walk in prepared without doing the digging yourself. It pulls from whatever is connected (calendar, CRM, meeting notes, web) and never invents data it cannot find."
+  },
+  {
+    "name": "client-follow-up",
+    "group": "client-work",
+    "summary": "A meeting transcript becomes a follow-up email draft and a table of next actions with owners and dates.",
+    "about": "Turns a meeting transcript or notes into a short follow-up email and a table of next actions with owners and due dates. Use it right after a client or prospect meeting so the recap goes out while the conversation is fresh and nothing promised on the call gets dropped. It drafts only: the email lands as a draft for you to review and send."
+  },
+  {
+    "name": "sow-scoping",
+    "group": "client-work",
+    "summary": "Discovery notes become a Statement of Work draft with phases, deliverables, roles and assumptions, price left as XXX.",
+    "about": "Turns discovery notes or a call transcript into a structured Statement of Work draft: context, objectives, approach, phases with weeks and deliverables, team roles, assumptions, and an investment line that always reads XXX. Use it after a discovery call or workshop when you need to show a client what the engagement would look like. The output is a draft for internal review, never sent to a client directly."
+  },
+  {
+    "name": "demo-script",
+    "group": "client-work",
+    "summary": "A timed two-minute product demo: the hook, the one live wow moment, the proof and a single ask.",
+    "about": "Scripts a two-minute product demo for a prospect: a hook in their own words, the one wow moment shown live, a line of proof, and a single specific ask, timed beat by beat with a fallback if the live step fails. Use it when you have a prototype, MVP, or batch run to show and want the prospect to leave knowing what to say yes to."
+  },
+  {
+    "name": "release-notes",
+    "group": "client-work",
+    "summary": "Git history becomes release notes that read like a product update, not a commit log.",
+    "about": "Turns a branch, a commit range or a set of PRs into notes a non-engineer can read: grouped by theme, file names translated into features, sorted into New, Improved, Fixed and Behind the scenes. Claim only what shipped, and when the reason for a change cannot be recovered from the diff, describe the what rather than guess the why. Use when asked for a changelog or \"what shipped\"."
+  },
+  {
+    "name": "resume-batch-run",
+    "group": "recruiting",
+    "summary": "Run a client's batch of resumes through an AI screener, tier the candidates, and give a reason for every score.",
+    "about": "A step by step procedure for running a client's batch of resumes through any AI resume-screening tool. It turns the job description into must-haves, accounts for every file in the zip, scores each resume on what the document shows, and tiers candidates into A, B and C with the agreed top slice flagged for interview. The deliverable gives the recruiter a reason for every score, lists anything that could not be scored, and leaves the hiring decision with the human."
+  },
+  {
+    "name": "staffing-outreach",
+    "group": "recruiting",
+    "summary": "Cold outreach to staffing agencies that offers to rank one of their live batches, with two follow-ups.",
+    "about": "Drafts cold outreach to staffing agencies and in-house recruiting teams for an AI resume-screening product. It opens with the buyer's real problem, the pile of applicants nobody ever reads, and turns the ask into a low-effort offer to rank one of their live batches. You get a sourced prospect signal, subject lines, a first email under 120 words and two follow-ups, all as drafts with no invented claims or pricing."
+  },
+  {
+    "name": "job-posting-grader",
+    "group": "recruiting",
+    "summary": "Grade a job posting from the seeker's side, and keep a grader honest when it publishes about named companies.",
+    "about": "Grades a job posting from the job seeker's side: how long it has been live according to the employer's own hiring system, whether it has been reposted, whether its text appears under other employers, and whether a legally required pay range is missing. It can also measure whether the employer replies to applicants at all. The skill carries the rules that keep a grader honest when it publishes about named companies: a signal that cannot be computed says so, every finding is a sourced measurement rather than a claim about intent, and every control is tested on what it refuses."
+  },
+  {
+    "name": "sharp",
+    "group": "betting-and-money",
+    "summary": "A recommend-only sports betting analyst: de-vig the market, price it, and gate every play on backtest-proven confidence.",
+    "about": "A recommend-only sports-betting analysis agent that never places a bet. It de-vigs a sharp reference market, runs per-sport models, and only lets a market headline the card after a backtest proves it beats the base rate and is calibrated, not just skilled. It grades only final games, tracks closing-line value as its north star, and documents every way a fake edge has been invented so the checks catch them before a card ships."
+  },
+  {
+    "name": "sharp-card-build",
+    "group": "betting-and-money",
+    "summary": "The daily routine that turns captured lines into a short card of straights and parlays, recommend-only.",
+    "about": "The daily run that turns raw captures into a betting card for the user to review. It orders the ingests so game rows exist before prices attach, refuses stale captures and started games, runs the robustness and sanity gates, and builds distinct straights and parlays with no play repeated. Nothing is ever placed; \"no bet\" is a normal result."
+  },
+  {
+    "name": "sharp-book-scraping",
+    "group": "betting-and-money",
+    "summary": "Read a sportsbook's lines with Playwright without killing the session or reporting a capture that did not happen.",
+    "about": "Hard-won rules for capturing a sportsbook's board and prop menus with Playwright without logging the user out or saving the same page five times. It covers clean browser shutdown, one context per profile, fingerprinting the page you actually landed on, and parsing board shapes that differ by sport, such as three-way soccer markets where the draw is easy to lose. It is read-only and never touches the bet slip."
+  },
+  {
+    "name": "sharp-ufc",
+    "group": "betting-and-money",
+    "summary": "Read a UFC card fight by fight and say who to back and why, recommend-only.",
+    "about": "A manual, research-driven read on a UFC or MMA card the user sends, priced against their sportsbook. It ranks what actually predicts fights, refuses to invent records or stats, de-vigs the price before calling any edge, and hands back the pick, the price, an honest confidence and the way it loses. Fights stay out of the headline locks because they have no backtest."
+  },
+  {
+    "name": "financial-advisor",
+    "group": "betting-and-money",
+    "summary": "An educational personal-finance coach that learns from a ledger of past picks and lessons. Not financial advice.",
+    "about": "A personal-CFO persona that keeps a money scoreboard honest and gets better at a weekly stock-pick exercise by reading a lessons ledger before every new pick. Every number comes from a live quote or the recorded ledger, opinion is labelled as opinion, and each thesis names the past lesson behind it. It is educational decision support, not financial advice."
+  }
+]

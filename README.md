@@ -5,224 +5,132 @@ A skill is a folder holding a `SKILL.md`: markdown instructions that
 situation, so a lesson learned once does not have to be relearned every session. Some
 also carry a script.
 
-These 24 were learned from shipping real systems through 2026. Most exist because
-something broke quietly and the mistake only surfaced when a person looked at the
-result. Each file records what went wrong, the rule that came out of it, and how to
-recognise the moment it applies again.
+These 37 were written while shipping real systems through 2026, in seven groups. The
+first four groups are rules: most exist because something broke quietly and the mistake
+only surfaced when a person looked at the result, so each records what went wrong, the
+rule that came out of it, and how to recognise the moment it applies again. The last three
+are working playbooks for a consultancy, a recruiting product and a betting analyst. They
+ship with sample companies and sample numbers in place of the real ones; each says what
+to replace to make it yours.
 
 ## Install
 
-Copy any folder into your skills directory:
+Copy any skill folder into your skills directory:
 
-```
-cp -r skills/fail-loud ~/.claude/skills/
+```sh
+git clone https://github.com/gavin844/claude-code-skills.git
+cp -r claude-code-skills/skills/honest-code/fail-loud ~/.claude/skills/
 ```
 
-Claude Code picks it up on the next session. Every skill folder has its own page with what it does, when it fires, the install commands and its files; [skills/](skills/) is the index. Skills with `user-invocable: true` in
-their `SKILL.md` header (`website-craft` and `web-motion-3d`) can also be called
-directly, for example `/website-craft detect src`.
+Claude Code picks it up on the next session. The group folder is only for browsing; the
+skill folder goes straight into `~/.claude/skills/`. Every skill has its own page with
+what it does, when it loads, what is inside, and its install commands.
 
 A few skills mention helper tools from their home workspace (`ui_check.js`,
-`ux_audit.js`, `done_gate.py`). Those are not included; the skills stand without
-them.
+`ux_audit.js`, `done_gate.py`). Those are not included; the skills stand without them.
 
-## Working methods
+## [Working methods](skills/working-methods)
 
-How the agent behaves across a session: when to act, when to ask, what to say, and
-what counts as finished.
+How the agent behaves across a session: when to act, when to ask, what to say, and what counts as finished.
 
-**[short](skills/short)**
-Born from a complaint that every reply ended in a wall of text the reader skipped.
-Hard word caps: 60 for an answer, 100 for a finished task, 150 for a long session.
-The first sentence is the answer; process narration, recaps and praise go. Bad news
-stays at full strength: "shorten the framing, never the fact." Always on.
+| Skill | What it does |
+|---|---|
+| [short](skills/working-methods/short) | Hard word caps on every reply: the answer first, no narration, no recaps. |
+| [just-keep-working](skills/working-methods/just-keep-working) | When the next step is obvious and reversible, do it and report, instead of asking permission. |
+| [correction-to-rule](skills/working-methods/correction-to-rule) | Turn a user's correction into a durable rule so the same mistake does not come back next session. |
+| [midwork-triggers](skills/working-methods/midwork-triggers) | Load the right skill from what the agent is about to do mid-task, not only from the words of the request. |
+| [preflight](skills/working-methods/preflight) | Before anything that writes, sends, deploys or spends, run the one check that settles the assumption, and never quietly change a rule the user set. |
+| [done-means-proven](skills/working-methods/done-means-proven) | Nothing is called done without evidence from outside the work: a screenshot looked at, a job that fired, a live URL fetched. |
+| [creative-mode](skills/working-methods/creative-mode) | On a request for creativity, diverge widely before converging, and aim for a bold, shippable leap over a safe tweak. |
 
-**[just-keep-working](skills/just-keep-working)**
-One session produced six variants of "want me to fix that?" about reversible tasks
-the agent had already diagnosed. If the fix is reversible, do it and report one line:
-"a question is a cost" paid by the person with less context. Still ask for money
-moving, anything a third party sees, destroying data, changing a rule the user set,
-or a genuine fork.
+## [Honest code](skills/honest-code)
 
-**[correction-to-rule](skills/correction-to-rule)**
-A correction fixed in place dies with the session, and the user pays for it again
-next week. Fires on "again", "I told you", "you keep", or a repeated instruction.
-Name the real cause (wrong process, missing context, weak rule, unreachable rule,
-unreliable code), write the fix in the smallest durable place (a hook, a skill body,
-a memory file), then re-run the task that failed.
+Code that tells the truth about itself: failures that show, checks that are proven, settings that are wired, scripts that are kept.
 
-**[midwork-triggers](skills/midwork-triggers)**
-On one day the agent broke seven things, and every one had a skill written for it
-that never loaded: the router fires on what the user types, and the decisions
-happened hours later. This is a table keyed on what the agent is about to do: add a
-guard, explain a zero, regenerate something, say done, rank a list. Each row names
-the skill and the failure that earned it.
+| Skill | What it does |
+|---|---|
+| [authoring-code-safely](skills/honest-code/authoring-code-safely) | Write code with the file tools, never through shell string surgery, so escaping cannot corrupt the file. |
+| [fail-loud](skills/honest-code/fail-loud) | Make failures visible instead of swallowed, so broken code cannot pass for working code. |
+| [locate-before-you-guard](skills/honest-code/locate-before-you-guard) | Find the line that produced the wrong output before adding a check that would hide it. |
+| [prove-the-checker](skills/honest-code/prove-the-checker) | Test every validator against a known-bad and a known-good case before trusting what it says. |
+| [wire-the-knob](skills/honest-code/wire-the-knob) | Prove some code reads a new setting before claiming the setting changes anything. |
+| [save-the-script](skills/honest-code/save-the-script) | Turn a working one-off script into a kept tool instead of rewriting it next time. |
 
-**[preflight](skills/preflight)**
-Twice in one day the agent replaced a rule the user had set, wrote a comment
-explaining why its version was better, and shipped it; the comment made the
-violation look deliberate. "A requirement the user stated is not a default to be
-optimised." If a rule looks wrong, say so in one sentence and keep it. Before any
-command that writes, sends, deploys or spends, name the assumption and the one
-command that settles it.
+## [Trustworthy data](skills/trustworthy-data)
 
-**[user-state-is-sacred](skills/user-state-is-sacred)**
-The user placed three real bets off a morning card. Three rebuilds later all three
-were deleted, two plays he had never seen were marked taken, and nothing errored.
-Three rules: a user decision is never the default, never delete a row the user has
-touched, preserve by identity rather than position. Load before any rebuild, re-sync
-or re-import that replaces rows a person may have edited.
+Numbers and records a person can rely on: fresh inputs, money read from the source, user decisions that survive a rebuild.
 
-**[done-means-proven](skills/done-means-proven)**
-From the user: "You've done about maybe 70% of it. I tell you to fix it, and you say
-you're done." The missing 30% is always somewhere the agent did not look, so evidence
-must come from outside the work: a screenshot looked at, a job that fired on its own
-schedule, a deploy fetched at the public URL. "Unverifiable is a legitimate outcome.
-Unverified and unmentioned is not."
+| Skill | What it does |
+|---|---|
+| [user-state-is-sacred](skills/trustworthy-data/user-state-is-sacred) | Anything a person decided by hand survives every rebuild, re-sync and regeneration. |
+| [one-writer-per-record](skills/trustworthy-data/one-writer-per-record) | A record that a scheduled job and a live session can both write gets exactly one owner. |
+| [freshness-is-a-precondition](skills/trustworthy-data/freshness-is-a-precondition) | Check the age of cached data, prices and stats before acting on them. |
+| [money-is-read-never-derived](skills/trustworthy-data/money-is-read-never-derived) | Read balances and profit from the system of record, never recompute them from history. |
+| [version-your-definitions](skills/trustworthy-data/version-your-definitions) | Stamp a metric's definition next to its values, so numbers from different formulas are never compared. |
+| [correlated-exposure](skills/trustworthy-data/correlated-exposure) | Group by what decides the outcome, not by the label, so an "at most N" limit catches hidden overlap. |
+| [enumerate-before-ranking](skills/trustworthy-data/enumerate-before-ranking) | List the whole option set before picking the best, so the pick is not made from a partial list. |
 
-**[release-notes](skills/release-notes)**
-Turns a branch, a commit range or a set of PRs into notes a non-engineer can read:
-grouped by theme, file names translated into features, sorted into New, Improved,
-Fixed and Behind the scenes. Claim only what shipped, and when the reason for a
-change cannot be recovered from the diff, describe the what rather than guess the
-why. Use when asked for a changelog or "what shipped".
+## [Web apps](skills/web-apps)
 
-**[creative-mode](skills/creative-mode)**
-Written because the default agent is "too literal and too safe": it picks the
-obvious option and ships a tidy increment. This mode
-treats the instruction as the floor, generates six to ten different directions before
-choosing, and picks "the boldest idea that is still real and shippable now." The
-honesty floor stays: no invented data, no fabricated results.
+Shipping a web surface that is finished, does not look generated, and moves well.
 
-## Engineering discipline
+| Skill | What it does |
+|---|---|
+| [web-app-baseline](skills/web-apps/web-app-baseline) | The 20 checks every web app passes before it is called done, with the commands that prove them. |
+| [website-craft](skills/web-apps/website-craft) | The 30 tells that make a site look machine-made, with a detector that finds them. |
+| [web-motion-3d](skills/web-apps/web-motion-3d) | Real animation and 3D in a web app (Lottie, React Three Fiber, Vectary) without it reading as generated. |
 
-Rules for code and data, each from a bug that returned a plausible answer instead of
-crashing.
+## [Client work](skills/client-work)
 
-**[authoring-code-safely](skills/authoring-code-safely)**
-In one session, heredocs turned `"\n"` into literal newlines, `python -c` mangled a
-regex escape, and an unquoted heredoc let the shell run backticked names as commands,
-deleting text from four files while this very skill was being written. Source files
-are written with Write and Edit, never through bash string surgery.
+A consultancy's sales and delivery documents, from the first call to the release notes. Ships with a sample company, Fieldstone AI, to replace with your own.
 
-**[fail-loud](skills/fail-loud)**
-"The expensive bugs are not the ones that crash. They are the ones that return a
-plausible answer." Patterns from one week: an `except: pass` that turned a model
-blend into a silent no-op, an `if x:` that discarded a legitimate zero, a lookup
-returning `None` that left records permanently ungradeable. After any `except`,
-`.get()` or truthiness check: "if this silently did nothing, would I be able to
-tell?"
+| Skill | What it does |
+|---|---|
+| [blueprint-builder](skills/client-work/blueprint-builder) | A tailored top-of-funnel Opportunity Blueprint that shows a prospect where AI can move their business. |
+| [discovery-call-prep](skills/client-work/discovery-call-prep) | A one-page brief before a prospect call: who is in the room, where the deal stands, the angle and the opening question. |
+| [client-follow-up](skills/client-work/client-follow-up) | A meeting transcript becomes a follow-up email draft and a table of next actions with owners and dates. |
+| [sow-scoping](skills/client-work/sow-scoping) | Discovery notes become a Statement of Work draft with phases, deliverables, roles and assumptions, price left as XXX. |
+| [demo-script](skills/client-work/demo-script) | A timed two-minute product demo: the hook, the one live wow moment, the proof and a single ask. |
+| [release-notes](skills/client-work/release-notes) | Git history becomes release notes that read like a product update, not a commit log. |
 
-**[locate-before-you-guard](skills/locate-before-you-guard)**
-A card showed three of one prop type; the fix was a per-market ceiling. Two days
-later the same card came back, ceiling intact, because the real defect was a counter
-four lines away that reset on every call. Reproduce the exact wrong output, point at
-the line, and prove the mechanism by breaking it deliberately before adding any cap,
-assert or retry. A guard catches the next variant; it is not the fix.
+## [Recruiting](skills/recruiting)
 
-**[prove-the-checker](skills/prove-the-checker)**
-Four checkers reported the opposite of the truth: a UI harness that tested dark mode
-by removing the attribute, a hover test using a synthetic
-event that cannot trigger CSS `:hover`, a guard that quarantined 77,900 valid rows.
-Before its output influences a decision, a checker must pass a planted known-bad case
-and a known-good case. "A checker with false results is worse than no checker."
+Screening resumes in batches, selling to staffing agencies, and grading job postings. Ships with sample data to replace with your own.
 
-**[save-the-script](skills/save-the-script)**
-A markdown-to-document converter was written from scratch three times and thrown away
-each time. A regenerated script "comes back slightly different every time", so output
-drifts. Before writing, search the skills, tools and scratch directories for the
-verb. After it works, give it arguments instead of hardcoded values, a header naming
-the incident that produced it, and a home the next session will find.
+| Skill | What it does |
+|---|---|
+| [resume-batch-run](skills/recruiting/resume-batch-run) | Run a client's batch of resumes through an AI screener, tier the candidates, and give a reason for every score. |
+| [staffing-outreach](skills/recruiting/staffing-outreach) | Cold outreach to staffing agencies that offers to rank one of their live batches, with two follow-ups. |
+| [job-posting-grader](skills/recruiting/job-posting-grader) | Grade a job posting from the seeker's side, and keep a grader honest when it publishes about named companies. |
 
-**[wire-the-knob](skills/wire-the-knob)**
-A parlay edge threshold sat in config and was read by zero lines of code for two
-days, while parlays went 1W-10L on real money. When you
-write a config value or gating constant, grep for it in the same turn; if the only
-hit is the config file, wire it or delete it. Then set it to an absurd value once and
-watch for a change.
+## [Betting and money](skills/betting-and-money)
 
-**[one-writer-per-record](skills/one-writer-per-record)**
-A scheduled watcher rebuilt the daily card and deleted the one a human had built
-minutes earlier. A screenshot script matched buttons by visible
-text and marked bets as placed. Every piece of durable state gets one named writer:
-if a scheduler writes it, a human must not, and the reverse. Browser tools against
-live systems block writes at the network layer, because "intent is not enforcement."
+A recommend-only sports betting analyst and a personal finance coach. Neither places a bet or a trade. Ships with a sample $1,000 bankroll.
 
-**[version-your-definitions](skills/version-your-definitions)**
-A lines-of-code counter changed its exclusion list, and the next delta subtracted a
-new-rules total from an old-rules basis, reporting negative work. "A metric is a
-number plus the rule that produced it." Stamp the definition version beside stored
-values, refuse to compare across a mismatch, and retire old data rather than relabel
-it. Use before editing any filter, threshold or formula behind a tracked number.
-
-**[freshness-is-a-precondition](skills/freshness-is-a-precondition)**
-The most frequent failure in a week of work: a two-day-old capture built a card on
-games already finished, a stale reference price manufactured edge out of elapsed
-time. "Stale data does not look stale." Every input carries an age checked at the
-point of use, unknown age is stale, and stale means refuse loudly rather than warn
-and continue. Freshness of a file is not freshness of its content.
-
-**[correlated-exposure](skills/correlated-exposure)**
-A cap of two per market passed a card holding three picks that were one opinion about
-the first five innings of a baseball game. Three tickets, one bet. The fix was
-grouping by what decides the outcome, not a smaller number. Same shape: tests sharing
-one fixture, retries against one dead resolver. "What single thing, if it were wrong,
-would take all of these down together?"
-
-**[enumerate-before-ranking](skills/enumerate-before-ranking)**
-Ten markets had fresh prices; the card considered three. A whole market with 188
-captured props was missing from the ingest loop, and nothing errored. "Picking the
-best of what loaded is not picking the best." Count the universe from the sources,
-compare it to what reached the ranking, and report the gap before the winner. Use
-before choosing from any pool that could be quietly short.
-
-**[money-is-read-never-derived](skills/money-is-read-never-derived)**
-"Every money bug in this project came from computing a figure that could have been
-read." A bankroll rebuilt from settled bets drifted from the account; two histories
-disagreed by $7.23 and neither could arbitrate. Name the system of record beside the
-code, read rather than reconstruct, surface the delta when derivation is unavoidable,
-never invent a number, never settle while the event is live.
-
-## Web apps
-
-What a shipped surface has to pass, and how to keep it from looking generated.
-
-**[web-app-baseline](skills/web-app-baseline)**
-The user listed these once; they went into a rules file nothing referenced, so they
-loaded nowhere. Now a skill, so it applies everywhere. Twenty checks: custom 404 and
-error pages, loading and empty states, a title and Open Graph image per route,
-keyboard reach, 360px responsiveness, AA contrast on composited colours, every UI
-claim true, verified at the public URL. Covers the three theme states (dark, light,
-unstamped) that kept biting.
-
-**[website-craft](skills/website-craft)**
-"All 30 of these are things that make a website obviously vibecoded." The 30 tells,
-each with an instead: harsh gradients, the default icon set, pure white, three
-feature cards in a row, the three default fonts, em dashes, fake testimonials, three
-pricing tiers. The detector needs only Node:
-`node skills/website-craft/scripts/detect.mjs <dir> [--json] [--only id,id] [--severity high]`
-prints `file:line` per finding and exits 1 on any HIGH, so it gates a deploy. LOOK
-items go to a human because "no regex can decide this."
-
-**[web-motion-3d](skills/web-motion-3d)**
-Motion is a tell when generic and an asset when it shows the product doing something;
-3D is a tell when it is a blob and an asset when it is a real object. The pipeline:
-Jitter to dotLottie via `@lottiefiles/dotlottie-react`, React Three Fiber with the
-Canvas dynamic-imported and `dpr` capped, Vectary and its free-tier limits. Threlte
-is Svelte-only, so nobody reaches for it in Next.js. "If you cannot say what
-the motion tells the user, do not add it."
+| Skill | What it does |
+|---|---|
+| [sharp](skills/betting-and-money/sharp) | A recommend-only sports betting analyst: de-vig the market, price it, and gate every play on backtest-proven confidence. |
+| [sharp-card-build](skills/betting-and-money/sharp-card-build) | The daily routine that turns captured lines into a short card of straights and parlays, recommend-only. |
+| [sharp-book-scraping](skills/betting-and-money/sharp-book-scraping) | Read a sportsbook's lines with Playwright without killing the session or reporting a capture that did not happen. |
+| [sharp-ufc](skills/betting-and-money/sharp-ufc) | Read a UFC card fight by fight and say who to back and why, recommend-only. |
+| [financial-advisor](skills/betting-and-money/financial-advisor) | An educational personal-finance coach that learns from a ledger of past picks and lessons. Not financial advice. |
 
 ## How these were made
 
 Gavin Long wrote these with Claude Code while building production systems through
 2026: an internal business development system on a real sales pipeline, a Slack-based
-operations assistant, a sports analytics engine, several deployed web apps,
-and research bots. Each skill started as a correction or a failure in that work and
-was written down so the next session would not repeat it.
+operations assistant, a sports analytics engine, several deployed web apps, and research
+bots. Each rule started as a correction or a failure in that work and was written down so
+the next session would not repeat it.
 
-The agent authored the text at Gavin's direction. The published copies are scrubbed
-of client and colleague details; the dates, numbers and failures are as they
-happened.
+The agent authored the text at Gavin's direction. The published copies are scrubbed of
+client and colleague details; in the rule groups the dates, numbers and failures are as
+they happened. The playbook groups run on made-up sample data.
+
+## Keeping it consistent
+
+Every README in this repo is generated. Edit a `SKILL.md` or `catalog.json`, then run
+`python scripts/build_readmes.py`; `--check` fails if any page is out of date.
 
 ## License
 
